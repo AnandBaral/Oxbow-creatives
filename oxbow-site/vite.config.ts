@@ -1,7 +1,10 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Static build for GitHub Pages: every route is prerendered to plain HTML.
 export default defineConfig({
+  vite: {
+    base: "/Oxbow-creatives/",
+  },
+
   tanstackStart: {
     server: { entry: "server" },
     prerender: {
