@@ -8,7 +8,6 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     // GitHub Pages mounts this app at /Oxbow-creatives/.
-    basepath: import.meta.env.BASE_URL.replace(/\/$/, "") || "/",
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
