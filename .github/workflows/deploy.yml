@@ -17,28 +17,43 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
+          cache-dependency-path: oxbow-site/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./oxbow-site
+
+      - name: Build website
+        run: npm run build
+        working-directory: ./oxbow-site
+
       - name: Add 404 fallback and .nojekyll
         run: |
-          cp .output/public/index.html .output/public/404.html
-          touch .output/public/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
+          cp oxbow-site/.output/public/index.html oxbow-site/.output/public/404.html
+          touch oxbow-site/.output/public/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: .output/public
+          path: ./oxbow-site/.output/public
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
