@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install
       - name: Work out base path
         run: |
           REPO="${GITHUB_REPOSITORY#*/}"
